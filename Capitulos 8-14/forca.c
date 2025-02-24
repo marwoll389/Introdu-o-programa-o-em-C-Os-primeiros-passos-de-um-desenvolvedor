@@ -3,7 +3,7 @@
 
 char palavra[10];
 char chutesanteriores[26];
-int tentativas = 0;
+int chutesdados = 0;
 
 void abertura () {
 	printf("/****************************/\n");
@@ -14,35 +14,33 @@ void abertura () {
 int jachutou(char letra) {
 	int achou = 0;
 
-	for(int j = 0; j < tentativas; j++) {
+	for(int j = 0; j < chutesdados; j++) {
  		if(chutesanteriores[j] == letra) {
  				achou = 1;
  				break;
  		}
  	}
- //	if(achou = 0) {
- //		(*erros)++;
- //	}
+
  	return achou;
 
 }
 
 void desenhaforca() {
 
-	printf("Voce ja deu %d chutes\n", tentativas);
+	printf("Voce ja deu %d chutes\n", chutesdados);
 
  		for(int posicao = 0; posicao < strlen(palavra); posicao++) {
 
  			if(jachutou(palavra[posicao])) {
  				printf("%c ", palavra[posicao]);
+ 				
  			} else 
  				printf("_ ");
  		
  		} 
+ 		
  		printf("\n");
- 		//if(erros > 0) {
- 		//	printf("Erro %d de 6", erros);
- 	//	}
+ 
 }
 
 void chuta() {
@@ -51,7 +49,7 @@ void chuta() {
 	printf("Qual letra voce chuta?\n");
  	scanf(" %c", &chute);
 
- 	chutesanteriores[tentativas] = chute;
+ 	chutesanteriores[chutesdados] = chute;
 
 }
 
@@ -60,24 +58,47 @@ void escolhepalavra() {
 	sprintf(palavra, "XESQUE");
 }
 
+int enforcou() {
+	int erros = 0;
+
+	for(int i = 0; i < chutesdados; i++){
+
+		int existe = 0;
+
+		for(int j = 0; j < strlen(palavra); j++) {
+			if (chutesanteriores[i] == palavra[j]) {
+				existe = 1;
+				break;	
+			}
+		}
+		if(!existe) erros++;
+	}
+	return erros >= 5;
+}
+
+int ganhou() {
+	for(int i = 0; i < strlen(palavra); i++) {
+		if(!jachutou(palavra[i])) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 int main() {
-	
-	int erros = 0;	
- 	int acertou = 0;
- 	int enforcou = 0;
 	
 	abertura();
 	escolhepalavra();
 
  	do {
- 		if(erros == 5) {
- 			enforcou = 1;
- 		}
+ 		//if(erros == 5) {
+ 		//	enforcou = 1;
+ 		//}
 
- 		desenhaforca(&erros);
+ 		desenhaforca();
  		chuta();
 
- 		tentativas++;
+ 		chutesdados++;
 
- 	} while(!acertou && !enforcou);
+ 	} while(!ganhou() && !enforcou());
 }
