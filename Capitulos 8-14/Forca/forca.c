@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 //variáveis globais
-char palavra[10];
+char palavra[TAMANHO_PALAVRA];
 char chutesanteriores[26];
 int chutesdados = 0;
 
@@ -20,12 +20,12 @@ void adicionarpalavra() {
 	char quer;
 
 	printf("Deseja adicionar uma nova palavra ao jogo? [S/N]\n");
-	scanf("%s", &quer);
+	scanf(" %c", &quer);
 
 	if(quer == 'S'){
-		char novapalavra[20];
+		char novapalavra[TAMANHO_PALAVRA];
 
-		printf("Digite a nova palavra, em maisculas");
+		printf("Digite a nova palavra, em maiusculas\n");
 		scanf("%s", &novapalavra);
 
 		FILE* f;
@@ -112,23 +112,31 @@ void chuta() {
  	chutesanteriores[chutesdados] = chute;
 }
 
-//enforcar
-int enforcou() {
+int letraexiste(char letra) {
+
+	for(int j = 0; j < strlen(palavra); j++) {
+		if(letra == palavra[j]) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int contadordeerros() {
 	int erros = 0;
 
 	for(int i = 0; i < chutesdados; i++){
 
-		int existe = 0;
-
-		for(int j = 0; j < strlen(palavra); j++) {
-			if (chutesanteriores[i] == palavra[j]) {
-				existe = 1;
-				break;	
-			}
+		if(!letraexiste(chutesanteriores[i])) {	
+			erros++;
 		}
-		if(!existe) erros++;
 	}
-	return erros >= 5;
+	return erros;
+}
+
+//enforcar
+int enforcou() {
+	return contadordeerros() >= 5;
 }
 
 //ganhar
@@ -145,8 +153,9 @@ int ganhou() {
 int main() {
 	
 	abertura();
+	adicionarpalavra();
 	escolhepalavra();
-	printf("%s\n", palavra);
+	//printf("%s\n", palavra);
 
  	do {
  		desenhaforca();
