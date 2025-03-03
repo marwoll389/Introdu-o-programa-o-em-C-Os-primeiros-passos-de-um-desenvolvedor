@@ -10,7 +10,7 @@
 int jogardnv = 1;
 
 int main() {
-	while(jogardnv == 1) {
+	do {
 		//contextualização
 		printf("********************************\n");
 		printf("Bem vindo ao jogo adivinhesque!\n");
@@ -140,7 +140,7 @@ int main() {
 		printf("Digite 1 se quiser jogar novamente\n");
 		scanf("%d", &jogardnv );
 		
-	}
+	} while(jogardnv == 1)
 	printf("Fim de jogo!\n");
 	printf("Obrigado por jogar!");
-}
+} 

@@ -7,4 +7,6 @@ int ganhou();
 void desenhaforca();
 void escolhepalavra();
 void adicionarpalavra();
+int contadordeerros();
+int letraexiste(char letra);
 #define TAMANHO_PALAVRA 20

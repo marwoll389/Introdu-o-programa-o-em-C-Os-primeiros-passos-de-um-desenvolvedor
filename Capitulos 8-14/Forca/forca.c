@@ -8,12 +8,25 @@
 char palavra[TAMANHO_PALAVRA];
 char chutesanteriores[26];
 int chutesdados = 0;
+char chute;
+int qtddepalavras;
 
 //abertura do jogo
 void abertura () {
 	printf("/****************************/\n");
 	printf("/	Jogo	de	Forcanesque	*/\n");
 	printf("/****************************/\n\n");
+}
+
+int palavrajaexiste() {
+
+	FILE* f;
+
+	f = fopen("palavras.txt", "r");
+
+	for(int i = 0; i > qtddepalavras; i++ ) {
+		if(novapalavra == )
+	}
 }
 
 void adicionarpalavra() {
@@ -60,7 +73,7 @@ void escolhepalavra() {
 		exit(1);
 	}
 
-	int qtddepalavras;
+	
 	fscanf(f, "%d", &qtddepalavras);
 
 	srand(time(0));
@@ -90,7 +103,21 @@ int jachutou(char letra) {
 //desenha a forca
 void desenhaforca() {
 
+	int erros = contadordeerros();
+
 	printf("Voce ja deu %d chutes\n", chutesdados);
+
+ 	printf("  _______           \n");
+	printf(" |/      |          \n");
+	printf(" |      %c%c%c      \n", (erros >= 1 ? '(' : ' '), (erros >= 1 ? '_' : ' '), (erros >= 1 ? ')' : ' '));
+	printf(" |      %c%c%c      \n", (erros >= 2 ? '\\' : ' '),(erros >= 2 ? '|' : ' '), (erros >= 2 ? '/' : ' '));
+	printf(" |       %c         \n", (erros >= 3 ? '|' : ' '));
+	printf(" |      %c %c       \n", (erros >= 4 ? '/' : ' '), (erros >= 4 ? '\\' : ' '));
+	printf(" |                  \n");
+	printf("_|___               \n");
+	
+	printf("\n\n");
+
 
  	for(int posicao = 0; posicao < strlen(palavra); posicao++) {
  		if(jachutou(palavra[posicao])) {
@@ -104,12 +131,29 @@ void desenhaforca() {
 
 //recebimento do chute
 void chuta() {
+	int chutevalido = 0;
 
-	char chute;
-	printf("Qual letra voce chuta?\n");
- 	scanf(" %c", &chute);
+	while(!chutevalido) {
+		
+		
+		printf("Qual letra voce chuta?\n");
+	 	scanf(" %c", &chute);
+		
+		if(chute >= 65 && chute <= 90) {
+	 		chutevalido =  1;
+	 	} else
+	 		printf("Chute invalido, apenas letras maisculas\n");
+	 		printf("Tente outra letra\n\n");
+	 	}
 
- 	chutesanteriores[chutesdados] = chute;
+	 	if(letraexiste(chute)) {
+	 		printf("Voce acertou, a palavra tem a letra %c\n\n", chute);
+	 	} else
+	 		printf("Voce errou, a palavra nao tem a letra %c\n\n", chute);
+
+	 	chutesanteriores[chutesdados] = chute;
+	 	chutesdados++;
+	 	chutevalido = 0;
 }
 
 int letraexiste(char letra) {
@@ -161,7 +205,11 @@ int main() {
  		desenhaforca();
  		chuta();
 
- 		chutesdados++;
-
  	} while(!ganhou() && !enforcou());
+ 	if(ganhou) {
+ 		printf("Parabens, voce ganhou\n");
+
+ 	} else 
+ 		printf("Perdeu!, tente denovo");
+ 		
 }
