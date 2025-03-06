@@ -10,23 +10,13 @@ char chutesanteriores[26];
 int chutesdados = 0;
 char chute;
 int qtddepalavras;
+int nummaxchutes;
 
 //abertura do jogo
 void abertura () {
 	printf("/****************************/\n");
 	printf("/	Jogo	de	Forcanesque	*/\n");
 	printf("/****************************/\n\n");
-}
-
-int palavrajaexiste() {
-
-	FILE* f;
-
-	f = fopen("palavras.txt", "r");
-
-	for(int i = 0; i > qtddepalavras; i++ ) {
-		if(novapalavra == )
-	}
 }
 
 void adicionarpalavra() {
@@ -37,7 +27,7 @@ void adicionarpalavra() {
 
 	if(quer == 'S'){
 		char novapalavra[TAMANHO_PALAVRA];
-
+	while(1) {
 		printf("Digite a nova palavra, em maiusculas\n");
 		scanf("%s", &novapalavra);
 
@@ -49,17 +39,32 @@ void adicionarpalavra() {
 			exit(1);
 		}
 		
+		char palavrajaexistente[TAMANHO_PALAVRA];
+		
+		for(int i = 0; i > qtddepalavras; i++ ) {
+			fscanf(f, "%s", &palavrajaexistente);
+				
+			if(novapalavra == palavrajaexiste) {
+				printf("Essa palavra ja existe, escreva outra!\n");
+				continue;
+			}
+			fgets();
+		}	
+	}
 		int qtd;
 		fscanf(f, "%d", &qtd);
 		qtd++;
 
 		fseek(f, 0, SEEK_SET);
-		fprintf(f, "%d", qtd);
+		fprintf(f, "%04d", qtd);
 
 		fseek(f, 0, SEEK_END);
 		fprintf(f, "\n%s", novapalavra);
 		
 		fclose(f);
+	
+		printf("Palavra %s adicionada!\n", novapalavra);
+	
 	}
 }
 
@@ -83,6 +88,28 @@ void escolhepalavra() {
 		fscanf(f,"%s", &palavra);
 	}
 	fclose(f);
+}
+
+int dificuldade() {
+	int dificuldade; 
+
+	printf("Qual dificuldade você quer jogar?\n");
+	printf("1- Fácil  2- Médio  3- Difícil\n");
+	scanf("%d", &dificuldade);
+
+	switch(dificuldade) {
+	case 1:
+		nummaxchutes = 8;
+		break;
+
+	case 2:
+		nummaxchutes = 6;
+		break;
+
+	case 3:
+		nummaxchutes = 4;
+		break;
+	}
 }
 
 //verificação dos chutes
@@ -144,7 +171,7 @@ void chuta() {
 	 	} else
 	 		printf("Chute invalido, apenas letras maisculas\n");
 	 		printf("Tente outra letra\n\n");
-	 	}
+	 }
 
 	 	if(letraexiste(chute)) {
 	 		printf("Voce acertou, a palavra tem a letra %c\n\n", chute);
@@ -180,7 +207,7 @@ int contadordeerros() {
 
 //enforcar
 int enforcou() {
-	return contadordeerros() >= 5;
+	return contadordeerros() >= nummaxchutes;
 }
 
 //ganhar
@@ -193,13 +220,29 @@ int ganhou() {
 	return 1;
 }
 
+int ranking(int resultado) {
+	FILE* f;
+
+	f = fopen("ranking.txt", "w+");
+	if(f == NULL){
+		printf("Arquivo nao pode ser acessado");
+		exit(1);
+	}
+
+	fseek(f, 0, SEEK_SET);
+	if(resultado) {
+		fprintf(f, "sua pontuacao foi fodinha");
+	} else 
+		fprintf(f, "nao tao fodinha");
+	fclose(f);
+}
+
 //codigo principal
 int main() {
 	
 	abertura();
-	adicionarpalavra();
 	escolhepalavra();
-	//printf("%s\n", palavra);
+	dificuldade();
 
  	do {
  		desenhaforca();
@@ -207,9 +250,13 @@ int main() {
 
  	} while(!ganhou() && !enforcou());
  	if(ganhou) {
- 		printf("Parabens, voce ganhou\n");
+ 		printf("Parabens, voce ganhou\n\n");
+		adicionarpalavra();
+ 		printf("Fim de jogo!");
 
  	} else 
- 		printf("Perdeu!, tente denovo");
- 		
+ 		printf("Perdeu!, tente denovo\n");
+ 		printf("Fim de jogo!");
+
+ 	ranking(ganhou());
 }
