@@ -27,7 +27,7 @@ void adicionarpalavra() {
 
 	if(quer == 'S'){
 		char novapalavra[TAMANHO_PALAVRA];
-	while(1) {
+	
 		printf("Digite a nova palavra, em maiusculas\n");
 		scanf("%s", &novapalavra);
 
@@ -38,19 +38,8 @@ void adicionarpalavra() {
 			printf("Banco de dados nao pode ser acessado\n\n");
 			exit(1);
 		}
-		
-		char palavrajaexistente[TAMANHO_PALAVRA];
-		
-		for(int i = 0; i > qtddepalavras; i++ ) {
-			fscanf(f, "%s", &palavrajaexistente);
-				
-			if(novapalavra == palavrajaexiste) {
-				printf("Essa palavra ja existe, escreva outra!\n");
-				continue;
-			}
-			fgets();
-		}	
-	}
+			
+	
 		int qtd;
 		fscanf(f, "%d", &qtd);
 		qtd++;
@@ -232,6 +221,7 @@ int ranking(int resultado) {
 	fseek(f, 0, SEEK_SET);
 	if(resultado) {
 		fprintf(f, "sua pontuacao foi fodinha");
+		//fprintf(f, "voce ganhou com %d chutes", chutesdados);
 	} else 
 		fprintf(f, "nao tao fodinha");
 	fclose(f);
