@@ -6,7 +6,7 @@ int jachutou(char letra);
 int ganhou();
 void desenhaforca();
 void escolhepalavra();
-void adicionarpalavra();
+int adicionarpalavra();
 int contadordeerros();
 int letraexiste(char letra);
 int dificuldade();

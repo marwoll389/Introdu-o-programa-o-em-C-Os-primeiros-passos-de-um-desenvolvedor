@@ -19,7 +19,7 @@ void abertura () {
 	printf("/****************************/\n\n");
 }
 
-void adicionarpalavra() {
+int adicionarpalavra() {
 	char quer;
 
 	printf("Deseja adicionar uma nova palavra ao jogo? [S/N]\n");
@@ -39,9 +39,28 @@ void adicionarpalavra() {
 			exit(1);
 		}
 			
-	
 		int qtd;
 		fscanf(f, "%d", &qtd);
+	
+		char palavraexistente[20];
+
+		for(int i = 0; i < qtd; i++) {
+			fscanf(f, "%s", &palavraexistente);
+
+			int contador = 0;
+
+			for(int j = 0; j < strlen(palavraexistente); j++) {
+					
+				if(novapalavra[j] == palavraexistente[j]) {
+					contador++;
+				}
+				if(contador == strlen(palavraexistente)) {
+					printf("Essa palavra ja existe\n");
+					return 0;
+				}
+			}
+		}
+
 		qtd++;
 
 		fseek(f, 0, SEEK_SET);
