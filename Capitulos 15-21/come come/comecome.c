@@ -2,53 +2,76 @@
 #include <string.h>
 #include <stdlib.h>
 #include "comecome.h"
+#include "mapa.h"
 
-char** mapa;
-int linhas;
-int colunas;
+MAPA m;
+POSICAO heroi;
 
-void lemapa() {
+void encontramapa(MAPA* m, POSICAO* p, char c){
 
-	FILE* f = fopen("mapa.txt", "r");
-	if(f == NULL) {
-		printf("Erro ao ler o mapa");
-		exit(1);
-	}
-
-	fscanf(f, "%d %d", &linhas, &colunas);
-	alocamapa();
-
-	for(int i = 0; i < linhas; i++){
-		fscanf(f, "%s", mapa[i]);
-	}
-
-	fclose(f);
-}
-
-void alocamapa() {
-
-	mapa = malloc(sizeof(char*) * linhas);
-
-	for(int i = 0; i < linhas; i++){
-		mapa[i] = malloc(sizeof(char) * (colunas + 1));
+	for(int i = 0; i < m->linhas; i++) {
+		for(int j = 0; j < m->colunas; j++) {
+			if(m->matriz[i][j] == c){
+				p->x = i;
+				p->y = j;
+				return;
+			}
+		}
 	}
 }
 
-void liberamapa(){
-	for(int i = 0; i < linhas; i++){
-		free(mapa[i]);
-	}
+int acabou(){
+	return 0;
+}
 
-	free(mapa);
+void move(char direcao){
+	
+	if( direcao != 'a' &&
+		direcao != 'w' &&
+		direcao != 's' &&
+		direcao != 'd') {
+
+		return;
+	}
+	
+	m.matriz[heroi.x][heroi.y] = '.';
+
+	switch(direcao){
+	case 'a':
+		m.matriz[heroi.x][heroi.y-1] = '@';
+		heroi.y--;
+		break;
+	case 'd':
+		m.matriz[heroi.x][heroi.y+1] = '@';
+		heroi.y++;
+		break;
+	case 'w':
+		m.matriz[heroi.x-1][heroi.y] = '@';
+		heroi.x--;
+		break;
+	case 's':
+		m.matriz[heroi.x+1][heroi.y] = '@';
+		heroi.x++;
+		break;
+	}
+	
+
 }
 
 int main() {
 
-	lemapa();
+	lemapa(&m);
+	encontramapa(&m, &heroi, '@');
 
-	for(int i = 0; i < linhas; i++){
-		printf("%s\n", mapa[i]);
-	}
+	do {
 
-	liberamapa();
+		imprimemapa(&m);
+
+		char comando;
+		scanf(" %c", &comando);
+		move(comando);
+
+	} while(!acabou());
+
+	liberamapa(&m);
 }
