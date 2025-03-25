@@ -39,3 +39,21 @@ void imprimemapa(MAPA* m){
 		printf("%s\n", m->matriz[i]);
 	}
 }
+int ehvalida(MAPA* m, int x, int y) {
+	if(x >= m->linhas)
+		return 0;
+	if(y >= m->colunas)
+		return 0;
+
+	return 1;
+}
+
+int ehvazia(MAPA* m, int x, int y){
+	return m->matriz[x][y] == '.';
+}
+
+void andanomapa(MAPA* m, int origemx, int origemy, int destinox, int destinoy) {
+	char personagem = m->matriz[origemx][origemy];
+	m->matriz[destinox][destinoy] = '@';
+	m->matriz[origemx][origemy] = '.';
+}

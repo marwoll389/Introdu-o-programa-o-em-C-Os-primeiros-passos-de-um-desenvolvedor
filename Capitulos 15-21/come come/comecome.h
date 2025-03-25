@@ -6,3 +6,4 @@ typedef struct posicao POSICAO;
 
 void move(char direcao);
 //void encontramapa(MAPA* m, POSICAO* p, char c);
+int ehdirecao(char direcao);

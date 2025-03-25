@@ -26,36 +26,45 @@ int acabou(){
 
 void move(char direcao){
 	
-	if( direcao != 'a' &&
-		direcao != 'w' &&
-		direcao != 's' &&
-		direcao != 'd') {
+	if(!ehdirecao(direcao))
+		return;;
 
-		return;
-	}
-	
-	m.matriz[heroi.x][heroi.y] = '.';
+	int proximox = heroi.x;
+	int proximoy = heroi.y;
 
 	switch(direcao){
-	case 'a':
-		m.matriz[heroi.x][heroi.y-1] = '@';
-		heroi.y--;
-		break;
-	case 'd':
-		m.matriz[heroi.x][heroi.y+1] = '@';
-		heroi.y++;
-		break;
-	case 'w':
-		m.matriz[heroi.x-1][heroi.y] = '@';
-		heroi.x--;
-		break;
-	case 's':
-		m.matriz[heroi.x+1][heroi.y] = '@';
-		heroi.x++;
-		break;
+		case 'a':
+			proximoy--;
+			break;
+		case 'd':
+			proximoy++;
+			break;
+		case 'w':
+			proximox--;
+			break;
+		case 's':
+			proximox++;
+			break;
 	}
 	
+	if(!ehvalida(&m, proximox, proximoy));
+		return;
 
+	if(!ehvazia(&m, proximox, proximoy));
+		return;
+
+	andanomapa(&m, heroi.x, heroi.y, proximox, proximoy);
+	heroi.x = proximox;
+	heroi.y = proximoy;
+
+}
+
+int ehdirecao(char direcao) {
+	return
+		direcao == 'a' ||
+		direcao == 'd' ||
+		direcao == 'w' ||
+		direcao == 's';
 }
 
 int main() {
